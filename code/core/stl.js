@@ -172,4 +172,48 @@ function STLModel(){
 		this.findNext();
 		
 	}
+	
+	this.buildFromString = function(str){
+		this.clear();
+		var strtab = str.split('\n');
+		//retrait des caracteres blancs
+		for(let n = 0; n < strtab; n++){
+			strtab[n] = strtab[n].trim();
+			strtab[n] = strtab[n].toLowerCase();
+		}
+		
+		for(let n = 0; n < strtab.length; n++)
+		{
+			if(strtab[n].search(/facet normal/) != -1)
+			{//on construit une face
+				var x, y, z, n, v1, v2, v3, temp;
+				temp = strtab[n].split(' ');
+				x = parseFloat(temp[2]);
+				y = parseFloat(temp[3]);
+				z = parseFloat(temp[4]);
+				n = new Vecteur(x, y, z);
+				n++; n++;
+				temp = strtab[n].split(' ');
+				x = parseFloat(temp[1]);
+				y = parseFloat(temp[2]);
+				z = parseFloat(temp[3]);
+				v1 = new Vertex(x, y, z);
+				n++;
+				temp = strtab[n].split(' ');
+				x = parseFloat(temp[1]);
+				y = parseFloat(temp[2]);
+				z = parseFloat(temp[3]);
+				v2 = new Vertex(x, y, z);
+				n++;
+				temp = strtab[n].split(' ');
+				x = parseFloat(temp[1]);
+				y = parseFloat(temp[2]);
+				z = parseFloat(temp[3]);
+				v3 = new Vertex(x, y, z);
+				facetab.push(new STLFace(n, v1, v2, v3));
+			}
+		}
+		this.findNext();
+		
+	};
 }
